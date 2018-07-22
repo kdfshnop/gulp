@@ -1,0 +1,23 @@
+@import "reset.less";
+@import "global.less";
+html{
+    font-family: @default-font-family;
+    font-size: @basic-font-size;
+}
+body{
+    background: white;
+    font-family: @default-font-family;
+}
+// 循环设置各种尺寸下的html节点的字体大小，以实现适配;
+.loop(@i : 1) when (@i <= length(@bsw-array)) {  //注意less数组是从1开始的
+    @bws : extract(@bsw-array , @i);
+    @font : @bws / @basic-screen-width * @basic-font-size ;  
+    @media only screen and (min-width : @bws)  and (orientation : portrait) {
+      html {
+        font-size : @font !important ;
+        font-family : @default-font-family ;
+      }
+    }
+    .loop((@i + 1)) ;
+  } ;
+  .loop ;
