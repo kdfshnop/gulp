@@ -1,2 +1,3 @@
-let a=1;
-setTimeout(()=>{},2000)
+$('div').click(()=>{
+    alert(66);
+});

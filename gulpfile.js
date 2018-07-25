@@ -68,25 +68,33 @@ gulp.task('less',function(){
         .pipe(gulp.dest('src/css'))
 });
 
-// es6-es5;
+// es6-es5;并压缩，赋名;合并;//尽量不要合并代码，会出问题;
 var babel=require("gulp-babel");
+var uglify=require("gulp-uglify");
+var rename=require("gulp-rename");
+var concat=require("gulp-concat");
+var sourcemaps=require("gulp-sourcemaps");//由于引入的是压缩后的代码，不易断点，使用此插件可以处理;
 gulp.task('es6-es5',function(){
     gulp.src("./src/**/*.js")
         .pipe(babel())
-        .pipe(gulp.dest('./dist/'))
+        .pipe(uglify())
+        .pipe(rename({
+            suffix:'.min'
+        }))
+        .pipe(gulp.dest('./dist'))
 })
 
 // 本地服务;
 var connect=require('gulp-connect');
 gulp.task('localServer',function(){
     connect.server({
-        root:'src',
+        root:'',
         livereload:true
     });
     // gulp.watch('./src/**/*.less',['less']);
     // gulp.watch(['./src/**/*.less','./src/**/*.html'],['pageReload']);
-    gulp.watch(['./src/**/*.less','./src/**/*.html'],function(callback){
-        sequence('less','pageReload')(function(err){
+    gulp.watch(['./src/**/*.less','./src/**/*.html','./src/**/*.js'],function(callback){
+        sequence('less','es6-es5','pageReload')(function(err){
             if(err)console.log(err);
         })//可用，必须带上后面的函数
         // runSequence('less','pageReload',cb)暂时不对
@@ -94,6 +102,6 @@ gulp.task('localServer',function(){
 });
 // 定义任务reload,供watch使用;实时加载
 gulp.task('pageReload',function(){
-   return gulp.src(['./src/**/*.less','./src/**/*.html'])
+    gulp.src(['./src/**/*.less','./src/**/*.html'])
         .pipe(connect.reload())
 });
