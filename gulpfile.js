@@ -4,7 +4,8 @@ var gulp =require("gulp");
 var sequence=require("gulp-sequence");//国内版;
 var runSequence= require('gulp-run-sequence');//国外版;
 
-
+// 由于测试并不会向前端一样安装node环境，不会用npm加载依赖，因此看项目的依赖包放在何处，如果放在node_modules中，也需要将node_modules打包，因为提交时可能不提交node_modules,
+// 也可以将依赖包放在另一个文件夹里，这样就不用对node_modules进行处理了,视情况而定;
 // 在执行打包的时候，一般都需要先清理目标文件夹，以保证每次打包时，都是最新的文件。
 var clean=require("gulp-clean");
 //定义任务;hello为任务名;
