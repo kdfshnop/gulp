@@ -64,8 +64,10 @@ gulp.task('watchChange',function(){
 var less=require('gulp-less');
 gulp.task('less',function(){
     gulp.src('./src/less/**/*.less')
+        .pipe(sourcemaps.init())
         // 让less转变为css;
         .pipe(less())
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('src/css'))
 });
 
@@ -74,14 +76,16 @@ var babel=require("gulp-babel");
 var uglify=require("gulp-uglify");
 var rename=require("gulp-rename");
 var concat=require("gulp-concat");
-var sourcemaps=require("gulp-sourcemaps");//由于引入的是压缩后的代码，不易断点，使用此插件可以处理;
+var sourcemaps=require("gulp-sourcemaps");//由于引入的是压缩后的代码，不易断点，使用此插件可以处理;既可以处理js，也可以处理css；
 gulp.task('es6-es5',function(){
     gulp.src("./src/**/*.js")
+        .pipe(sourcemaps.init())
         .pipe(babel())
         .pipe(uglify())
         .pipe(rename({
             suffix:'.min'
         }))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('./dist'))
 })
 

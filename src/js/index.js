@@ -1,3 +1,4 @@
 $('div').click(()=>{
-    alert(66);
+    alert(22);
+    // console.log(1)
 });
